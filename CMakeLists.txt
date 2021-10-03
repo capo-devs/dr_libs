@@ -36,10 +36,6 @@ target_include_directories(${project_name} SYSTEM INTERFACE
 "${CMAKE_CURRENT_SOURCE_DIR}/include"
 )
 
-target_compile_options(${project_name} PUBLIC
--Wno-implicit-fallthrough
-)
-
 option(DR_LIBS_BUILD_TESTS "Build tests" ${is_root_project})
 if(${DR_LIBS_BUILD_TESTS})
   add_subdirectory(tests)
