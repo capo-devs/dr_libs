@@ -921,7 +921,7 @@ Use this only for objects initialized with drwav_init*() functions
 (drwav_init(), drwav_init_ex(), drwav_init_write(),
 drwav_init_write_sequential()).
 */
-DRWAV_API drwav_result drwav_uninit(drwav* pWav);
+DRWAV_API void drwav_uninit(drwav* pWav);
 
 /*
 Reads raw audio data.

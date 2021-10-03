@@ -3882,10 +3882,8 @@ DRWAV_API drwav* drwav_init_memory_write_sequential_pcm_frames(
       ppData, pDataSize, pFormat, totalPCMFrameCount * pFormat->channels, pAllocationCallbacks);
 }
 
-DRWAV_API drwav_result drwav_uninit(drwav* pWav) {
-  drwav_result result = DRWAV_SUCCESS;
-
-  if (pWav == NULL) { return DRWAV_INVALID_ARGS; }
+DRWAV_API void drwav_uninit(drwav* pWav) {
+  if (pWav == NULL) { return; }
 
   /*
   If the drwav object was opened in write mode we'll need to finalize a few
@@ -3961,13 +3959,6 @@ DRWAV_API drwav_result drwav_uninit(drwav* pWav) {
         }
       }
     }
-
-    /* Validation for sequential mode. */
-    if (pWav->isSequentialWrite) {
-      if (pWav->dataChunkDataSize != pWav->dataChunkDataSizeTargetWrite) {
-        result = DRWAV_INVALID_FILE;
-      }
-    }
   } else {
     if (pWav->pMetadata != NULL) {
       pWav->allocationCallbacks.onFree(pWav->pMetadata, pWav->allocationCallbacks.pUserData);
@@ -3984,8 +3975,6 @@ DRWAV_API drwav_result drwav_uninit(drwav* pWav) {
     fclose((FILE*)pWav->pUserData);
   }
 #endif
-
-  return result;
 }
 
 DRWAV_API size_t drwav_read_raw(drwav* pWav, size_t bytesToRead, void* pBufferOut) {
