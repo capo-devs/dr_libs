@@ -2,12 +2,13 @@ cmake_minimum_required(VERSION 3.14 FATAL_ERROR)
 
 enable_language(C)
 
-set(CMAKE_POLICY_DEFAULT_CMP0077 NEW)					# don't let OPTION erase non-cache variables
-set(CMAKE_CXX_EXTENSIONS OFF CACHE INTERNAL "" FORCE)	# disable compiler extensions
-set(CMAKE_POSITION_INDEPENDENT_CODE ON)					# enable PIC
+set(CMAKE_POLICY_DEFAULT_CMP0077 NEW) # don't let OPTION erase non-cache variables
+set(CMAKE_CXX_EXTENSIONS OFF CACHE INTERNAL "" FORCE) # disable compiler extensions
+set(CMAKE_POSITION_INDEPENDENT_CODE ON) # enable PIC
 set(CMAKE_DEBUG_POSTFIX "-d")
+
 if(NOT CMAKE_BUILD_TYPE)
-  set(CMAKE_BUILD_TYPE Debug)			# ensure CMAKE_BUILD_TYPE is not empty
+  set(CMAKE_BUILD_TYPE Debug) # ensure CMAKE_BUILD_TYPE is not empty
 endif()
 
 # project parameters
@@ -17,7 +18,8 @@ set(C_STANDARD 11)
 
 project(${project_name} VERSION "${project_version}")
 
-set(is_root_project OFF)	# indicate if this is the top-level project
+set(is_root_project OFF) # indicate if this is the top-level project
+
 if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
   set(is_root_project ON)
   message(STATUS "${PROJECT_NAME} is top level")
@@ -29,14 +31,16 @@ add_subdirectory(include/dr_libs)
 add_subdirectory(src)
 
 target_include_directories(${project_name} PRIVATE
-"include"
+  "include"
 )
 
 target_include_directories(${project_name} SYSTEM INTERFACE
-"${CMAKE_CURRENT_SOURCE_DIR}/include"
+  "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
+  "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>"
 )
 
 option(DR_LIBS_BUILD_TESTS "Build tests" ${is_root_project})
+
 if(${DR_LIBS_BUILD_TESTS})
   add_subdirectory(tests)
 endif()
